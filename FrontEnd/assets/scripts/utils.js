@@ -1,87 +1,59 @@
-// Sauvegarder le token
-function saveToken(token) {
-    localStorage.setItem('token', token);
-}
+// utils.js
+const API_URL = 'http://localhost:3000/api'; // ← AJOUTER ICI
 
-// Récupérer le token
-function getToken() {
-    return localStorage.getItem('token');
-}
-
-function removeToken() {
-    localStorage.removeItem('token');
-}
-
-// Vérifier si l'utilisateur est connecté
-function isLoggedIn() {
-    return !!getToken(); // Convertit en boolean
-}
-
-// Rediriger si pas connecté
 function requireAuth() {
-    if (!isLoggedIn()) {
-        window.location.href = 'index.html';
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = 'login.html';
     }
 }
 
-// ========== FETCH AVEC TOKEN ==========
-
-// Faire une requête avec le token automatiquement
 async function fetchWithAuth(url, options = {}) {
-    const token = getToken();
+    const token = localStorage.getItem('token');
     
-    // Ajouter le header Authorization
-    const headers = {
-        'Content-Type': 'application/json',
-        ...(token && { 'Authorization': `Bearer ${token}` }),
-        ...options.headers
-    };
-    
-    const response = await fetch(url, {
+    const config = {
         ...options,
-        headers
-    });
-    
-    // Si 401 (non autorisé), rediriger vers login
-    if (response.status === 401) {
-        removeToken();
-        window.location.href = 'index.html';
-        throw new Error('Session expirée');
-    }
-    
-    return response;
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            ...options.headers
+        }
+    };
+
+    return fetch(url, config);
 }
 
-// ========== AFFICHAGE DES MESSAGES ==========
-
-// Afficher un message d'erreur
-function showError(message, elementId = 'error-message') {
-    const errorDiv = document.getElementById(elementId);
+function showError(message) {
+    const errorDiv = document.getElementById('error-message');
     if (errorDiv) {
         errorDiv.textContent = message;
         errorDiv.style.display = 'block';
         
-        // Masquer après 5 secondes
         setTimeout(() => {
             errorDiv.style.display = 'none';
         }, 5000);
-    } else {
-        alert(message); // Fallback
     }
 }
 
-// Afficher un message de succès
-function showSuccess(message, elementId = 'success-message') {
-    const successDiv = document.getElementById(elementId);
+function showSuccess(message) {
+    const successDiv = document.getElementById('success-message');
     if (successDiv) {
         successDiv.textContent = message;
         successDiv.style.display = 'block';
         
-        // Masquer après 3 secondes
         setTimeout(() => {
             successDiv.style.display = 'none';
         }, 3000);
-    } else {
-        alert(message); // Fallback
     }
+}
+
+function logout() {
+    localStorage.removeItem('token');
+    window.location.href = 'login.html';
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }

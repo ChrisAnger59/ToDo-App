@@ -12,29 +12,49 @@
             <h1>📝 Mes tâches</h1>
             <button onclick="logout()" class="btn btn-secondary">Déconnexion</button>
         </header>
-        
+
         <div id="error-message" class="message error" style="display: none;"></div>
         <div id="success-message" class="message success" style="display: none;"></div>
-        
+
+        <!-- 📋 SECTION FORMULAIRES -->
         <div class="todo-form-container">
+            <form onsubmit="createColumn(event)" class="column-form">
+                <label for="column-title">Nom de la colonne:</label>
+                <input
+                    type="text"
+                    id="column-title"
+                    required
+                    maxlength="50"
+                    placeholder="Ex: À faire"
+                >
+                <button type="submit" class="btn btn-primary">➕ Ajouter une colonne</button>
+            </form>
+
             <form onsubmit="createTodo(event)" class="todo-form">
+                <label for="todo-title">Nom de la tâche:</label>
                 <input 
                     type="text" 
                     id="todo-title" 
-                    placeholder="Ajouter une nouvelle tâche..." 
                     required
                     maxlength="200"
+                    placeholder="Ex: Faire les courses"
                 >
-                <button type="submit" class="btn btn-primary">Ajouter</button>
+                <select id="todo-column" required>
+                    <option value="">-- Choisir une colonne --</option>
+                </select>
+                <button type="submit" class="btn btn-primary">➕ Ajouter une tâche</button>
             </form>
         </div>
-        
-        <div id="todo-list" class="todo-list">
-            <p class="loading">Chargement...</p>
+
+        <!-- 🗂️ SECTION COLONNES AVEC TÂCHES (NOUVEAU) -->
+        <div id="column-list" class="column-board">
+            <p class="loading">Chargement des colonnes...</p>
         </div>
     </div>
-    
+
     <script src="assets/scripts/utils.js"></script>
+    <script src="assets/scripts/columns.js"></script>
     <script src="assets/scripts/todos.js"></script>
 </body>
+
 </html>

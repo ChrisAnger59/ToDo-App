@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const userRoutes = require('./routes/user');
 const todoRoutes = require('./routes/todo');
+const columnRoutes = require('./routes/column');
 const app = express();
 
 // creation d'une instance Express
@@ -23,6 +24,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 app.use('/api/auth', userRoutes);
 app.use('/api/todos', todoRoutes);
+app.use('/api/columns', columnRoutes);
 
 // route de test
 app.get('/api', (req, res) =>{

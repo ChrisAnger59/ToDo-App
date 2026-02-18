@@ -21,6 +21,11 @@ const todoSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
+  },
+  columnId:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Column',
+    required: true
   }
 }, {
   timestamps: true

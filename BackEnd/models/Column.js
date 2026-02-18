@@ -1,5 +1,3 @@
-// EN CONSTRUCTION
-
 const mongoose = require('mongoose');
 
 const columnSchema = mongoose.Schema({
@@ -10,7 +8,8 @@ const columnSchema = mongoose.Schema({
     },
     order: {
         type: Number,
-        default: 0
+        default: 0,
+        required: true
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,

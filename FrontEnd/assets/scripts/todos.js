@@ -1,29 +1,27 @@
-const API_URL = 'http://localhost:3000/api';
-
 // Vérifier l'authentification au chargement
 requireAuth();
 
 async function loadTodos() {
     try {
         const response = await fetchWithAuth(`${API_URL}/todos`);
-        
+
         // Vérifier le statut de la réponse
         if (!response.ok) {
             throw new Error(`Erreur HTTP: ${response.status}`);
         }
-        
+
         // Le backend retourne directement un tableau
         const todos = await response.json();
-        
+
         console.log('Todos reçues:', todos); // DEBUG
-        
+
         // Vérifier que c'est bien un tableau
         if (!Array.isArray(todos)) {
             throw new Error('Format de réponse invalide');
         }
-        
+
         displayTodos(todos); // Passer directement le tableau
-        
+
     } catch (error) {
         console.error('Erreur détaillée:', error);
         showError('Impossible de charger les tâches: ' + error.message);
@@ -32,52 +30,72 @@ async function loadTodos() {
 }
 
 function displayTodos(todos) {
-    const todoList = document.getElementById('todo-list');
-    
-    // Vérifier que todos est bien un tableau
     if (!todos || !Array.isArray(todos)) {
         console.warn('todos n\'est pas un tableau:', todos);
         todos = [];
     }
-    
-    if (todos.length === 0) {
-        todoList.innerHTML = '<p class="empty-message">📝 Aucune tâche. Ajoutez-en une !</p>';
-        return;
-    }
-    
-    // Afficher les tâches
-    todoList.innerHTML = todos.map(todo => `
-        <div class="todo-item ${todo.completed ? 'completed' : ''}">
-            <input 
-                type="checkbox" 
-                ${todo.completed ? 'checked' : ''} 
-                onchange="toggleTodo('${todo._id}', ${!todo.completed})"
-            >
-            <span class="todo-title">${escapeHtml(todo.title)}</span>
-            <button class="delete-btn" onclick="deleteTodo('${todo._id}')">🗑️</button>
-        </div>
-    `).join('');
+
+    // Récupérer toutes les zones de tâches
+    const taskLists = document.querySelectorAll('.task-list');
+
+    taskLists.forEach(taskList => {
+        const columnId = taskList.dataset.columnId;
+
+        // Filtrer les tâches de cette colonne
+        const columnTodos = todos.filter(todo => todo.columnId === columnId);
+
+        if (columnTodos.length === 0) {
+            taskList.innerHTML = '<p class="empty-message">Aucune tâche dans cette colonne</p>';
+            return;
+        }
+
+        // Afficher les tâches
+        taskList.innerHTML = columnTodos.map(todo => `
+            <article class="todo-item ${todo.completed ? 'completed' : ''}">
+                <input 
+                    type="checkbox" 
+                    ${todo.completed ? 'checked' : ''} 
+                    onchange="toggleTodo('${todo._id}', ${!todo.completed})"
+                    class="todo-checkbox"
+                >
+                <span class="todo-title">${escapeHtml(todo.title)}</span>
+                <button class="delete-btn" onclick="deleteTodo('${todo._id}')" title="Supprimer">🗑️</button>
+            </article>
+        `).join('');
+    });
 }
 
 async function createTodo(event) {
     event.preventDefault();
-    
+
     const titleInput = document.getElementById('todo-title');
+    const columnSelect = document.getElementById('todo-column'); 
+
     const title = titleInput.value.trim();
-    
+    const columnId = columnSelect.value; 
+
     if (!title) {
         showError('Le titre ne peut pas être vide');
         return;
     }
-    
+
+    if (!columnId) { 
+        showError('Veuillez sélectionner une colonne');
+        return;
+    }
+
     try {
         const response = await fetchWithAuth(`${API_URL}/todos`, {
             method: 'POST',
-            body: JSON.stringify({ title })
+            body: JSON.stringify({ 
+                title,
+                columnId 
+            })
         });
-        
+
         if (response.ok) {
-            titleInput.value = ''; // Vider le champ
+            titleInput.value = '';
+            columnSelect.value = '';
             loadTodos();
             showSuccess('Tâche ajoutée !');
         } else {
@@ -96,7 +114,7 @@ async function toggleTodo(id, completed) {
             method: 'PUT',
             body: JSON.stringify({ completed })
         });
-        
+
         if (response.ok) {
             loadTodos();
         } else {
@@ -113,12 +131,12 @@ async function deleteTodo(id) {
     if (!confirm('Voulez-vous vraiment supprimer cette tâche ?')) {
         return;
     }
-    
+
     try {
         const response = await fetchWithAuth(`${API_URL}/todos/${id}`, {
             method: 'DELETE'
         });
-        
+
         if (response.ok) {
             loadTodos();
             showSuccess('Tâche supprimée !');
@@ -138,5 +156,8 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-// Charger les tâches au chargement de la page
-document.addEventListener('DOMContentLoaded', loadTodos);
+// Charger les colonnes D'ABORD, puis les tâches
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadColumns(); // Attendre que les colonnes soient chargées
+    loadTodos();         // Ensuite charger les tâches
+});
