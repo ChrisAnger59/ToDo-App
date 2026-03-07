@@ -5,44 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes tâches - Todo App</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
+
+        <div id="popup-container"></div>
+
         <header class="app-header">
             <h1>📝 Mes tâches</h1>
-            <button onclick="logout()" class="btn btn-secondary">Déconnexion</button>
         </header>
-
-        <div id="error-message" class="message error" style="display: none;"></div>
-        <div id="success-message" class="message success" style="display: none;"></div>
 
         <!-- 📋 SECTION FORMULAIRES -->
         <div class="todo-form-container">
             <form onsubmit="createColumn(event)" class="column-form">
-                <label for="column-title">Nom de la colonne:</label>
+                <div class="form">
                 <input
                     type="text"
                     id="column-title"
                     required
                     maxlength="50"
-                    placeholder="Ex: À faire"
+                    placeholder="Nom de la colonne"
+                    class="input-login"
                 >
-                <button type="submit" class="btn btn-primary">➕ Ajouter une colonne</button>
+                <button type="submit" class="btn btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24">
+                        <path d="M12 5v14M5 12h14"
+                        fill="none" stroke="white" stroke-width="2"
+                        stroke-linecap="round"/>
+                    </svg>
+                </button>
+                </div>
             </form>
 
             <form onsubmit="createTodo(event)" class="todo-form">
-                <label for="todo-title">Nom de la tâche:</label>
+                <div class="form">
                 <input 
                     type="text" 
                     id="todo-title" 
                     required
                     maxlength="200"
-                    placeholder="Ex: Faire les courses"
+                    placeholder="Nom de la tache"
+                    class="input-login"
                 >
                 <select id="todo-column" required>
                     <option value="">-- Choisir une colonne --</option>
                 </select>
-                <button type="submit" class="btn btn-primary">➕ Ajouter une tâche</button>
+                <button type="submit" class="btn btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24">
+                        <path d="M12 5v14M5 12h14"
+                        fill="none" stroke="white" stroke-width="2"
+                        stroke-linecap="round"/>
+                    </svg>
+                </button>
+                
+                </div>
             </form>
         </div>
 
@@ -50,7 +67,16 @@
         <div id="column-list" class="column-board">
             <p class="loading">Chargement des colonnes...</p>
         </div>
+
     </div>
+
+    <footer>
+        <button onclick="logout()" class="logout-btn">
+            <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+  
+            <div class="text">Déconnexion</div>
+        </button>
+    </footer>
 
     <script src="assets/scripts/utils.js"></script>
     <script src="assets/scripts/auth.js"></script>

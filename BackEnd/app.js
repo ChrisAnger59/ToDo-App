@@ -38,4 +38,10 @@ app.get('/api', (req, res) =>{
     });
 });
 
+// route racine pour Render
+app.get('/', (req, res) => {
+    res.send('🚀 API Todo App en ligne');
+});
+
+
 module.exports = app;

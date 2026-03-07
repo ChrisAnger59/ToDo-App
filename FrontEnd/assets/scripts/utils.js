@@ -86,22 +86,22 @@ function showError(message) {
     }
 }
 
-function showSuccess(message) {
-    const errorDiv = document.getElementById('error-message');
-    const successDiv = document.getElementById('success-message');
+function showPopup(message, type = 'success') {
+    const container = document.getElementById('popup-container');
 
-    if (errorDiv) errorDiv.style.display = 'none';
+    const popup = document.createElement('div');
+    popup.className = `popup ${type}`;
+    popup.textContent = message;
 
-    if (successDiv) {
-        successDiv.textContent = message;
-        successDiv.style.display = 'block';
+    container.appendChild(popup);
 
-        // Auto-masquer après 3 secondes
-        setTimeout(() => {
-            successDiv.style.display = 'none';
-        }, 3000);
-    }
+    // Retire le pop-up après l’animation
+    setTimeout(() => {
+        popup.remove();
+    }, 3000);
 }
+
+
 
 // ========== ÉCHAPPEMENT HTML ==========
 function escapeHtml(text) {

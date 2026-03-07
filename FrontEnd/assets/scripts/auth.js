@@ -22,7 +22,7 @@ async function signup(event) {
         const data = await response.json();
         
         if (response.ok) {
-            showSuccess('Inscription réussie ! Redirection...');
+            showPopup('Inscription Réussie', 'success');
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 2000);
@@ -63,7 +63,7 @@ async function login(event) {
             // Sauvegarder le token
             saveToken(data.token);
             
-            showSuccess('Connexion réussie ! Redirection...');
+            showPopup('Connexion réussie !', 'success');
             setTimeout(() => {
                 window.location.href = 'todos.html';
             }, 1000);

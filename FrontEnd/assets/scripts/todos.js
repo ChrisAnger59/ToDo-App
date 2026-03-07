@@ -95,7 +95,7 @@ async function createTodo(event) {
             titleInput.value = '';
             columnSelect.value = '';
             loadTodos();
-            showSuccess('Tâche ajoutée !');
+            showPopup('Tâche ajoutée !', 'success');
         } else {
             const data = await response.json();
             showError(data.error || 'Erreur lors de l\'ajout');
@@ -137,7 +137,7 @@ async function deleteTodo(id) {
 
         if (response.ok) {
             loadTodos();
-            showSuccess('Tâche supprimée !');
+            showPopup('Tâche supprimée !', 'success');
         } else {
             const data = await response.json();
             showError(data.error || 'Erreur lors de la suppression');

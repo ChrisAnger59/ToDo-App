@@ -82,7 +82,7 @@ async function createColumn(event) {
         if (response.ok) {
             titleInput.value = ''; // Vider le champ
             loadColumns();
-            showSuccess('Colonne ajoutée !');
+            showPopup('Colonne Ajoutée !', 'success');
         } else {
             const data = await response.json();
             showError(data.error || 'Erreur lors de l\'ajout');
@@ -102,7 +102,7 @@ async function updateColumn(id, title) {  // Renommer la fonction
 
         if (response.ok) {
             loadColumns();  // ← Recharger les COLONNES
-            showSuccess('Colonne modifiée !');
+            showPopup('Colonne Modifiée !', 'success');
         } else {
             const data = await response.json();
             showError(data.error || 'Erreur lors de la modification');

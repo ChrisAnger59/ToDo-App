@@ -5,54 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - Todo App</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
+        <div id="popup-container"></div>
         <div class="auth-card">
-            <h1>📝 Todo App</h1>
+            <h1>ToDo App</h1>
             <h2>Inscription</h2>
             
-            <div id="error-message" class="message error" style="display: none;"></div>
-            <div id="success-message" class="message success" style="display: none;"></div>
-            
-            <form onsubmit="signup(event)">
-                <div class="form-group">
-                    <label for="email">Email</label>
+            <form onsubmit="signup(event)" class="login-form">
+                <div class="form">
                     <input 
                         type="email" 
                         id="email" 
                         required 
                         placeholder="votre@email.com"
                         autocomplete="email"
+                        class="input-login"
                     >
+                    <span class="input-border"></span>
                 </div>
                 
-                <div class="form-group">
-                    <label for="password">Mot de passe</label>
+                <div class="form">
                     <input 
                         type="password" 
                         id="password" 
                         required 
-                        placeholder="••••••••"
+                        placeholder="Votre Mot De Passe"
                         minlength="6"
                         autocomplete="new-password"
+                        class="input-login"
                     >
-                    <small>Au moins 6 caractères</small>
+                    <span class="input-border"></span>
                 </div>
                 
-                <div class="form-group">
-                    <label for="confirm-password">Confirmer le mot de passe</label>
+                <div class="form">
                     <input 
                         type="password" 
                         id="confirm-password" 
                         required 
-                        placeholder="••••••••"
+                        placeholder="Confirmez Mot De Passe"
                         minlength="6"
                         autocomplete="new-password"
+                        class="input-login"
                     >
+                    <span class="input-border"></span>
                 </div>
                 
-                <button type="submit" class="btn btn-primary">S'inscrire</button>
+                <button type="submit" class="log-button">
+                    <span class="transition"></span>
+                    <span class="gradient"></span>
+                    <span class="label">S'inscrire</span>
+                </button>
             </form>
             
             <p class="auth-link">
