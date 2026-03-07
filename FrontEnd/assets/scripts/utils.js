@@ -1,5 +1,6 @@
 // ========== CONFIGURATION ==========
-const API_URL = 'http://localhost:3000/api';
+// const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://todo-app-v8gk.onrender.com/api'
 
 // ========== GESTION TOKEN ==========
 function saveToken(token) {
