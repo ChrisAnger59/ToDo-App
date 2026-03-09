@@ -370,3 +370,11 @@ footer{
     }
 
 }
+
+.warning{
+    background-color: rgb(152, 80, 80);
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 1em;
+    padding: 0.5em;
+}
